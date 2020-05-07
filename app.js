@@ -184,5 +184,5 @@ if (process.env.NODE_ENV === 'production') {
 
 // Web-palvelimen luonti Expressin avulla
 app.listen(port, function () {
-    console.log("Using port " + PORT);
+    console.log("Using port " + port);
 });
