@@ -28,7 +28,7 @@ class App extends React.Component {
 
   // Getting all items from the database
   componentDidMount() {
-    fetch("/api/getall")
+    fetch("http://localhost:5000/api/getall")
       .then(res => res.json())
       .then(
         (result) => {
@@ -58,14 +58,14 @@ class App extends React.Component {
   deleteDisc = (e) => {
     // Retrieving the ID of the disc
     var id = e.currentTarget.getAttribute("value");
-    fetch('/api/delete/' + id, {
+    fetch('http://localhost:5000/api/delete/' + id, {
       method: 'delete',
     })
       .then(response => response.json())
       .then(data => {
         console.log(data);
         // Updating the table
-        fetch("/api/getall")
+        fetch("http://localhost:5000/api/getall")
           .then(res => res.json())
           .then(
             (result) => {
@@ -122,7 +122,7 @@ class App extends React.Component {
       nimi: this.nimiInput.current.value,
       puhnro: this.puhnroInput.current.value
     }, function () {
-      fetch('/api/update/' + id, {
+      fetch('http://localhost:5000/api/update/' + id, {
         method: 'put',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(this.state),
@@ -140,7 +140,7 @@ class App extends React.Component {
             puhnro: ''
           })
           // Updating the table
-          fetch("/api/getall")
+          fetch("http://localhost:5000/api/getall")
             .then(res => res.json())
             .then(
               (result) => {
@@ -181,7 +181,7 @@ class App extends React.Component {
   submitHandler = (e) => {
     e.preventDefault()
     console.log(this.state)
-    fetch('/api/add', {
+    fetch('http://localhost:5000/api/add', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(this.state),
@@ -199,7 +199,7 @@ class App extends React.Component {
           puhnro: ''
         })
         // Updating the table after successful add
-        fetch("/api/getall")
+        fetch("http://localhost:5000/api/getall")
           .then(res => res.json())
           .then(
             (result) => {
