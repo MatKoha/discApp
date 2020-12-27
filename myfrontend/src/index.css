@@ -43,6 +43,7 @@ span {
   cursor: pointer; 
 }
 
+
 #trash {
   color: orangered;
 }
@@ -58,12 +59,44 @@ span {
   color:blue;
 }
 
+#ok {
+ color: rgb(0, 206, 0);
+}
+
+#ok :hover {
+  color: green
+}
+
+#addButton {
+	box-shadow:inset 0px 1px 0px 0px #caefab;
+	background:linear-gradient(to bottom, #77d42a 5%, #5cb811 100%);
+	background-color:#77d42a;
+  border-radius:6px;
+  width: 184px;
+	border:1px solid #268a16;
+	display:inline-block;
+	cursor:pointer;
+	color:#306108;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+}
+#addButton:hover {
+	background:linear-gradient(to bottom, #5cb811 5%, #77d42a 100%);
+	background-color:#5cb811;
+}
+#addButton:active {
+	position:relative;
+	top:1px;
+}
+
+
 input[type=text], select {
   width: 100%;
-  padding: 6px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
   resize: vertical;
+  height: 25px;
 }
 
 label {
@@ -75,18 +108,6 @@ label {
   background-color: #f2f2f2;
   padding: 20px;
   overflow-x:auto;
-}
-
-.col-25 {
-  float: left;
-  width: 25%;
-  margin-top: 2px;
-}
-
-.col-75 {
-  float: left;
-  width: 75%;
-  margin-top: 2px;
 }
 
 /* Clear floats after the columns */
@@ -193,7 +214,7 @@ label {
 	transition: all .5s;
 }
 .searchBar[type=search]:focus {
-	width: 90%;
+	width: 95%;
 	background-color: #fff;
 	border-color: #66CC75;
 	
@@ -262,47 +283,6 @@ label {
 .addNew:active {
 	position:relative;
 	top:1px;
-}
-
-.cancel {
-	box-shadow:inset 0px 0px 14px -3px #f2fadc;
-	background:linear-gradient(to bottom, #dbe6c4 5%, #9ba892 100%);
-	background-color:#dbe6c4;
-	border-radius:6px;
-	border:1px solid #b2b8ad;
-	display:inline-block;
-	cursor:pointer;
-	color:#757d6f;
-	font-family:Arial;
-	font-size:15px;
-	font-weight:bold;
-	padding:8px 24px;
-	text-decoration:none;
-  text-shadow:0px 1px 0px #ced9bf;
-  width: 100%;
-  margin-top: 5px;
-}
-.cancel:hover {
-	background:linear-gradient(to bottom, #9ba892 5%, #dbe6c4 100%);
-	background-color:#9ba892;
-}
-.cancel:active {
-	position:relative;
-	top:1px;
-}
-
-.close {
-  cursor: pointer;
-  position: absolute;
-  display: block;
-  padding: 2px 5px;
-  line-height: 20px;
-  right: -10px;
-  top: -10px;
-  font-size: 24px;
-  background: #ffffff;
-  border-radius: 18px;
-  border: 1px solid #cfcece;
 }
 
 .header, .footer {
