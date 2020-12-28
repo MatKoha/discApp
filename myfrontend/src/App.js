@@ -55,7 +55,7 @@ function App() {
   // Deleting disc by id
   const deleteDisc = index => {
     var id = items[index]._id
-    fetch('http://localhost:5000/api/delete/' + id, {
+    fetch('/api/delete/' + id, {
       method: 'delete',
     })
       .then(response => response.json())
@@ -88,7 +88,7 @@ function App() {
   // Adding a new disc to the database
   const submitHandler = (e) => {
     e.preventDefault();
-    fetch('http://localhost:5000/api/add', {
+    fetch('/api/add', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(values),
@@ -106,7 +106,7 @@ function App() {
           puhnro: ''
         })
         // Reloading the table after successful add
-        fetch('http://localhost:5000/api/getall', {
+        fetch('/api/getall', {
           method: 'GET',
         })
           .then(res => res.json())
@@ -143,7 +143,7 @@ function App() {
   const updateSubmitHandler = (e) => {
     e.preventDefault()
     var id = inEditMode.rowKey;
-    fetch('http://localhost:5000/api/update/' + id, {
+    fetch('/api/update/' + id, {
       method: 'put',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(editedValues),
@@ -152,7 +152,7 @@ function App() {
       .then(data => {
         console.log(data);
         // Reloading the table after successful edit
-        fetch('http://localhost:5000/api/getall', {
+        fetch('/api/getall', {
           method: 'GET',
         })
           .then(res => res.json())
