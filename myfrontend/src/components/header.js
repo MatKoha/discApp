@@ -4,7 +4,7 @@ class Header extends React.Component {
     render() {
         return (
             <div className="header">
-                <img className="responsive" src="http://puskasoturit.com/sites/default/files/Tekstilogo_0.png"></img>
+                <img className="responsive" src="http://puskasoturit.com/sites/default/files/Tekstilogo_0.png" alt="puskislogo"></img>
                 <h1>Oletko hävittänyt frisbeegolfkiekkosi Espoon radoilla?</h1>
                 <p>Espoon radoilta löytyy huima määrä kiekkoja, joiden omistajat ovat kateissa. Etsimmekin näille kiekoille omistajia.
                 Listalta löydät löydetyt kiekot, jotka ovat päätyneet Puskasotureiden löytökiekkoihin.</p>

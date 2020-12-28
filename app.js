@@ -13,7 +13,7 @@ app.use(cors());
 // support parsing of application/json type post data
 app.use(express.json());
 // Specifying the port
-const port = process.env.port || 5000;
+const port = process.env.PORT || 5000;
 
 // Specifying the connection address and options
 var uri = "mongodb+srv://new_user:asdfghjkl@cluster0-9tdqv.mongodb.net/discgolf_bag";
