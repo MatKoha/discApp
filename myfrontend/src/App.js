@@ -35,7 +35,7 @@ function App() {
 
   // Getting all items from the database
   useEffect(() => {
-    fetch('http://localhost:5000/api/getall', {
+    fetch('/api/getall', {
       method: 'GET',
     })
       .then(res => res.json())
