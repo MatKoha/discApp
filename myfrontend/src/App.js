@@ -35,7 +35,7 @@ function App() {
 
   // function to get all items from the database after rendering
   function getAllItems() {
-    fetch('http://localhost:3000/api/getall', {
+    fetch('/api/getall', {
       method: 'GET',
     })
       .then(res => res.json())
@@ -59,7 +59,7 @@ function App() {
 
   // Deleting disc by id
   const deleteDisc = item => {
-    fetch('http://localhost:3000/api/delete/' + item._id, {
+    fetch('/api/delete/' + item._id, {
       method: 'delete',
     })
       .then(response => response.json())
@@ -90,7 +90,7 @@ function App() {
   // Adding a new disc to the database
   const submitHandler = (e) => {
     e.preventDefault();
-    fetch('http://localhost:3000/api/add', {
+    fetch('/api/add', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(values),
@@ -131,7 +131,7 @@ function App() {
   const updateSubmitHandler = (e) => {
     e.preventDefault()
     var id = inEditMode.rowKey;
-    fetch('http://localhost:3000/api/update/' + id, {
+    fetch('/api/update/' + id, {
       method: 'put',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(editedValues),
