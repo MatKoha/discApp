@@ -33,9 +33,9 @@ function App() {
   const nimiInput = useRef();
   const puhnroInput = useRef();
 
-  // Getting all items from the database
-  useEffect(() => {
-    fetch('/api/getall', {
+  // function to get all items from the database after rendering
+  function getAllItems() {
+    fetch('http://localhost:3000/api/getall', {
       method: 'GET',
     })
       .then(res => res.json())
@@ -50,25 +50,27 @@ function App() {
           console.log(error);
         }
       )
+  }
+
+  // Getting all items from the database
+  useEffect(() => {
+    getAllItems()
   }, [])
 
   // Deleting disc by id
-  const deleteDisc = index => {
-    var id = items[index]._id
-    fetch('/api/delete/' + id, {
+  const deleteDisc = item => {
+    fetch('http://localhost:3000/api/delete/' + item._id, {
       method: 'delete',
     })
       .then(response => response.json())
       .then(data => {
         console.log(data);
+        // Reloading the table after successful delete
+        getAllItems()
       })
       .catch((error) => {
         console.error(error);
       });
-    // removing deleted item and updating table
-    const newItems = [...items];
-    newItems.splice(index, 1);
-    setItems(newItems);
   }
 
   // Search state gets updated as the user types
@@ -88,7 +90,7 @@ function App() {
   // Adding a new disc to the database
   const submitHandler = (e) => {
     e.preventDefault();
-    fetch('/api/add', {
+    fetch('http://localhost:3000/api/add', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(values),
@@ -106,21 +108,7 @@ function App() {
           puhnro: ''
         })
         // Reloading the table after successful add
-        fetch('/api/getall', {
-          method: 'GET',
-        })
-          .then(res => res.json())
-          .then(
-            (result) => {
-              setIsLoaded(true);
-              setItems(result);
-            },
-            (error) => {
-              setIsLoaded(true);
-              setError(error);
-              console.log(error);
-            }
-          )
+        getAllItems()
       })
       .catch((error) => {
         console.error(error);
@@ -143,7 +131,7 @@ function App() {
   const updateSubmitHandler = (e) => {
     e.preventDefault()
     var id = inEditMode.rowKey;
-    fetch('/api/update/' + id, {
+    fetch('http://localhost:3000/api/update/' + id, {
       method: 'put',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(editedValues),
@@ -152,21 +140,7 @@ function App() {
       .then(data => {
         console.log(data);
         // Reloading the table after successful edit
-        fetch('/api/getall', {
-          method: 'GET',
-        })
-          .then(res => res.json())
-          .then(
-            (result) => {
-              setIsLoaded(true);
-              setItems(result);
-            },
-            (error) => {
-              setIsLoaded(true);
-              setError(error);
-              console.log(error);
-            }
-          )
+        getAllItems()
       })
       .catch((error) => {
         console.error(error);
@@ -176,18 +150,18 @@ function App() {
   }
 
   // Edit button enters edit mode
-  const editHandler = index => {
+  const editHandler = (item) => {
     setInEditMode({
       status: true,
-      rowKey: items[index]._id
+      rowKey: item._id
     })
     // Setting state as we enter edit mode, so we dont accidentaly submit empty values
     setEditedValues({
-      kiekko: items[index].kiekko,
-      valmistaja: items[index].valmistaja,
-      vari: items[index].vari,
-      nimi: items[index].nimi,
-      puhnro: items[index].puhnro
+      kiekko: item.kiekko,
+      valmistaja: item.valmistaja,
+      vari: item.vari,
+      nimi: item.nimi,
+      puhnro: item.puhnro
     })
   }
 
@@ -238,7 +212,7 @@ function App() {
               <th></th>
             </tr>
             {/* Mapping through the items and placing them on a table. If going to the edit mode, input fields will be rendered on the selected table row, otherwise table will be displayed normally */}
-            {filteredItems.map((item, index) => (
+            {filteredItems.map((item) => (
               <tr key={item._id}>
                 <td>{inEditMode.status && inEditMode.rowKey === item._id ? (<input type="text" name="kiekko" defaultValue={item.kiekko} ref={kiekkoInput} onChange={editChangeHandler}></input>) : item.kiekko}</td>
                 <td>{inEditMode.status && inEditMode.rowKey === item._id ? (<input type="text" name="valmistaja" defaultValue={item.valmistaja} ref={valmistajaInput} onChange={editChangeHandler}></input>) : item.valmistaja}</td>
@@ -246,22 +220,22 @@ function App() {
                 <td>{inEditMode.status && inEditMode.rowKey === item._id ? (<input type="text" name="nimi" defaultValue={item.nimi} ref={nimiInput} onChange={editChangeHandler}></input>) : item.nimi}</td>
                 <td>{inEditMode.status && inEditMode.rowKey === item._id ? (<input type="text" name="puhnro" defaultValue={item.puhnro} ref={puhnroInput} onChange={editChangeHandler}></input>) : item.puhnro}</td>
                 <td>{item.pvm}</td>
-                <td>{inEditMode.status && inEditMode.rowKey === item._id ? (<span type="submit" id="ok"><i className="fa fa-check" onClick={updateSubmitHandler} title="Tallenna muutokset" /></span>) : <span id="edit" onClick={() => editHandler(index)}><i className="fa fa-edit" title="Muokkaa" /></span>}</td>
-                <td>{inEditMode.status && inEditMode.rowKey === item._id ? (<span><i className="fa fa-close" onClick={closeEdit} title="Peruuta" /></span>) : <span value={item._id} onClick={(e) => { if (window.confirm('Haluatko varmasti poistaa tämän kohteen?')) deleteDisc(index) }} id="trash"><i className="fa fa-trash" title="Poista" /></span>}</td>
+                <td>{inEditMode.status && inEditMode.rowKey === item._id ? (<span type="submit" id="ok"><i className="fa fa-check" onClick={updateSubmitHandler} title="Tallenna muutokset" /></span>) : <span className="edit" value={item} onClick={(e) => editHandler(item)}><i className="fa fa-edit" title="Muokkaa" /></span>}</td>
+                <td>{inEditMode.status && inEditMode.rowKey === item._id ? (<span><i className="fa fa-close" onClick={closeEdit} title="Peruuta" /></span>) : <span value={item._id} onClick={(e) => { if (window.confirm('Haluatko varmasti poistaa tämän kohteen?')) deleteDisc(item) }} className="trash"><i className="fa fa-trash" title="Poista" /></span>}</td>
               </tr>
             ))}
           </thead>
         </table>
         {/* Input fields to add new discs to the database. Handled by changeHandler */}
-        <form onSubmit={submitHandler} id="myForm">
+        <form onSubmit={submitHandler}>
           <table>
             <thead>
               <tr>
-                <td><input required type="text" name="kiekko" placeholder="Kiekko" value={values.kiekko} onChange={changeHandler} /></td>
-                <td><input required type="text" name="valmistaja" placeholder="Valmistaja" value={values.valmistaja} onChange={changeHandler} /></td>
-                <td><input required type="text" name="vari" placeholder="Väri" value={values.vari} onChange={changeHandler} /></td>
-                <td><input required type="text" name="nimi" placeholder="Nimi" autoComplete="off" value={values.nimi} onChange={changeHandler} /></td>
-                <td><input required type="text" name="puhnro" placeholder="Puh. nro" autoComplete="off" value={values.puhnro} onChange={changeHandler} /></td>
+                <td><input type="text" name="kiekko" placeholder="Kiekko" value={values.kiekko} onChange={changeHandler} /></td>
+                <td><input type="text" name="valmistaja" placeholder="Valmistaja" value={values.valmistaja} onChange={changeHandler} /></td>
+                <td><input type="text" name="vari" placeholder="Väri" value={values.vari} onChange={changeHandler} /></td>
+                <td><input type="text" name="nimi" placeholder="Nimi" autoComplete="off" value={values.nimi} onChange={changeHandler} /></td>
+                <td><input type="text" name="puhnro" placeholder="Puh. nro" autoComplete="off" value={values.puhnro} onChange={changeHandler} /></td>
                 <td><button id="addButton">Lisää uusi</button></td>
               </tr>
             </thead>
