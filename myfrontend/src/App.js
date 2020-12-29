@@ -33,7 +33,7 @@ function App() {
   const nimiInput = useRef();
   const puhnroInput = useRef();
 
-  // function to get all items from the database after rendering
+  // function to get all items from the database
   function getAllItems() {
     fetch('/api/getall', {
       method: 'GET',
@@ -52,7 +52,7 @@ function App() {
       )
   }
 
-  // Getting all items from the database
+  // Getting all items from the database  after rendering
   useEffect(() => {
     getAllItems()
   }, [])
