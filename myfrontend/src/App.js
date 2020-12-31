@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
+import Datatable from './components/datatable'
+import Addtable from './components/addtable'
 import './App.css';
 
 function App() {
@@ -180,14 +182,6 @@ function App() {
     })
   }
 
-  // Filtering search results
-  let filteredItems = items.filter(
-    (item) => {
-      // Returning items based on search results, otherwise returning whole table
-      return Object.keys(item).some(key => item[key].toString().toLowerCase().search(search.toLowerCase()) !== -1);
-    }
-  );
-
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
@@ -198,48 +192,27 @@ function App() {
         {/* SEARCH BAR */}
         <input className="searchBar" type="search" placeholder="Hae..." value={search} onChange={updateSearch}></input>
         <div className="search"></div>
-        <table>
-          <thead>
-            <tr>
-              {/* Adding table headers to the table */}
-              <th>Kiekko</th>
-              <th>Valmistaja</th>
-              <th>Väri</th>
-              <th>Nimi</th>
-              <th>Puh. Nro</th>
-              <th>Lisätty</th>
-              <th></th>
-              <th></th>
-            </tr>
-            {/* Mapping through the items and placing them on a table. If going to the edit mode, input fields will be rendered on the selected table row, otherwise table will be displayed normally */}
-            {filteredItems.map((item) => (
-              <tr key={item._id}>
-                <td>{inEditMode.status && inEditMode.rowKey === item._id ? (<input type="text" name="kiekko" defaultValue={item.kiekko} ref={kiekkoInput} onChange={editChangeHandler}></input>) : item.kiekko}</td>
-                <td>{inEditMode.status && inEditMode.rowKey === item._id ? (<input type="text" name="valmistaja" defaultValue={item.valmistaja} ref={valmistajaInput} onChange={editChangeHandler}></input>) : item.valmistaja}</td>
-                <td>{inEditMode.status && inEditMode.rowKey === item._id ? (<input type="text" name="vari" defaultValue={item.vari} ref={variInput} onChange={editChangeHandler}></input>) : item.vari}</td>
-                <td>{inEditMode.status && inEditMode.rowKey === item._id ? (<input type="text" name="nimi" defaultValue={item.nimi} ref={nimiInput} onChange={editChangeHandler}></input>) : item.nimi}</td>
-                <td>{inEditMode.status && inEditMode.rowKey === item._id ? (<input type="text" name="puhnro" defaultValue={item.puhnro} ref={puhnroInput} onChange={editChangeHandler}></input>) : item.puhnro}</td>
-                <td>{item.pvm}</td>
-                <td>{inEditMode.status && inEditMode.rowKey === item._id ? (<span type="submit" id="ok"><i className="fa fa-check" onClick={updateSubmitHandler} title="Tallenna muutokset" /></span>) : <span className="edit" value={item} onClick={(e) => editHandler(item)}><i className="fa fa-edit" title="Muokkaa" /></span>}</td>
-                <td>{inEditMode.status && inEditMode.rowKey === item._id ? (<span><i className="fa fa-close" onClick={closeEdit} title="Peruuta" /></span>) : <span value={item._id} onClick={(e) => { if (window.confirm('Haluatko varmasti poistaa tämän kohteen?')) deleteDisc(item) }} className="trash"><i className="fa fa-trash" title="Poista" /></span>}</td>
-              </tr>
-            ))}
-          </thead>
-        </table>
-        {/* Input fields to add new discs to the database. Handled by changeHandler */}
+        {/* database items are displayed in this table */}
+        <Datatable
+        items={items}
+        search={search}
+        kiekkoInput={kiekkoInput}
+        valmistajaInput={valmistajaInput}
+        variInput={variInput}
+        nimiInput={nimiInput}
+        puhnroInput={puhnroInput}
+        inEditMode={inEditMode}
+        editChangeHandler={editChangeHandler}
+        updateSubmitHandler={updateSubmitHandler}
+        editHandler={editHandler}
+        closeEdit={closeEdit}
+        deleteDisc={deleteDisc}
+        />
+        {/* Table to add new items to the database */}
         <form onSubmit={submitHandler}>
-          <table>
-            <thead>
-              <tr>
-                <td><input type="text" name="kiekko" placeholder="Kiekko" value={values.kiekko} onChange={changeHandler} /></td>
-                <td><input type="text" name="valmistaja" placeholder="Valmistaja" value={values.valmistaja} onChange={changeHandler} /></td>
-                <td><input type="text" name="vari" placeholder="Väri" value={values.vari} onChange={changeHandler} /></td>
-                <td><input type="text" name="nimi" placeholder="Nimi" autoComplete="off" value={values.nimi} onChange={changeHandler} /></td>
-                <td><input type="text" name="puhnro" placeholder="Puh. nro" autoComplete="off" value={values.puhnro} onChange={changeHandler} /></td>
-                <td><button id="addButton">Lisää uusi</button></td>
-              </tr>
-            </thead>
-          </table>
+          <Addtable
+          values={values}
+          changeHandler={changeHandler} />
         </form>
       </div >
     );
