@@ -1,12 +1,14 @@
 // Otetaan tarvittavat moduulit käyttöön
 // Including necessary modules
-var mongoose = require("mongoose");
-var express = require("express");
-var cors = require('cors')
-var app = express();
+const dayjs = require("dayjs");
+const mongoose = require("mongoose");
+const express = require("express");
+const cors = require('cors')
+const app = express();
+require('dotenv').config();
 
 // This is needed to deploy the app on Heroku
-var path = require('path');
+const path = require('path');
 app.use(express.static(path.join(__dirname, 'myfrontend/build')));
 // Enabling cors
 app.use(cors());
@@ -16,8 +18,7 @@ app.use(express.json());
 const port = process.env.PORT || 5000;
 
 // Specifying the connection address and options
-var uri = "mongodb+srv://new_user:asdfghjkl@cluster0-9tdqv.mongodb.net/discgolf_bag";
-var options = {
+const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true
 };
@@ -25,23 +26,23 @@ var options = {
 // Connecting to the database
 mongoose.connect(process.env.MONGODB_URI || uri, options);
 
-var db = mongoose.connection;
+const db = mongoose.connection;
+console.log(db);
 
 // Defining a mongoose model
 const Disc = mongoose.model(
-    "Disc",
+    "discgolf_bag",
     {
-        kiekko: String,
-        valmistaja: String,
-        vari: String,
-        nimi: String,
-        puhnro: String,
-        pvm: String
+        date: String,
+        brand: String,
+        mold: String,
+        color: String,
+        condition: Number,
+        weight: Number
     },
 
     "discs"  // This is the collection that is going to be used
 );
-
 // Handling errors / success
 db.on("error", function () {
     console.log("Connection error!");
@@ -52,13 +53,13 @@ db.once("open", function () {
 });
 
 // parsing support
-var bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 // Creating routes and functionalities
 
 // Retrieving ALL discs
-app.get("/api/getall", function (req, res) {
-    Disc.find({}, null, function (err, results) {
+app.get("/api/getall", (_req, res) => {
+    Disc.find({}, null, (err, results) => {
         // Handling errors, returning status
         if (err) {
             res.status(500).json("Something went wrong " + err);
@@ -72,12 +73,12 @@ app.get("/api/getall", function (req, res) {
     });
 });
 
-app.get("/api/get/:id", function (req, res) {
+app.get("/api/get/:id", (req, res) => {
     // Poimitaan id talteen ja välitetään se tietokannan poisto-operaatioon
     // Getting the id and sending information to the database
-    var id = req.params.id;
+    const id = req.params.id;
 
-    Disc.findById(id, function (err, results) {
+    Disc.findById(id, (err, results) => {
         // Handling errors, returning status
         if (err) {
             res.status(500).json("Something went wrong " + err);
@@ -91,30 +92,20 @@ app.get("/api/get/:id", function (req, res) {
     });
 });
 
-// Formatting the date to the format dd/mm/yyyy
-var today = new Date();
-var dd = String(today.getDate()).padStart(2, '0');
-var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-var yyyy = today.getFullYear();
-
-today = dd + '/' + mm + '/' + yyyy;
-
 // Luodaan uusi tallennettava olio
 // Creating a new object
-app.post("/api/add", function (req, res) {
-    console.log(req.body)
-    var newDisc = new Disc({
-        kiekko: req.body.kiekko,
-        valmistaja: req.body.valmistaja,
-        vari: req.body.vari,
-        nimi: req.body.nimi,
-        puhnro: req.body.puhnro,
-        pvm: today
+app.post("/api/add", (req, res) => {
+    const newDisc = new Disc({
+        date: dayjs().format('DD.MM.YYYY'),
+        brand: req.body.brand,
+        mold: req.body.mold,
+        color: req.body.color,
+        condition: req.body.condition,
+        weight: req.body.weight,
     });
-
     // Tallennetaan olio tietokantaan
     // Saving the object to the database
-    newDisc.save(function (err, results) {
+    newDisc.save((err, results) => {
         // Handling errors
         if (err) {
             res.status(500).json("Something went wrong: " + err);
@@ -129,18 +120,18 @@ app.post("/api/add", function (req, res) {
 
 });
 
-// Muokataan leffan tietoja id-numeron perusteella. Huomaa ID-arvon lukeminen
-app.put("/api/update/:id", function (req, res) {
+// Update by id
+app.put("/api/update/:id", (req, res) => {
     // Poimitaan id talteen
-    var id = req.params.id;
+    const id = req.params.id;
 
     Disc.findByIdAndUpdate(id, {
-        kiekko: req.body.kiekko,
-        valmistaja: req.body.valmistaja,
-        vari: req.body.vari,
-        nimi: req.body.nimi,
-        puhnro: req.body.puhnro
-    }, { new: true }, function (err, results) {
+        brand: req.body.brand,
+        mold: req.body.mold,
+        color: req.body.color,
+        condition: req.body.condition,
+        weight: req.body.weight
+    }, { new: true }, (err, results) => {
         if (err) {
             res.status(500).json("Järjestelmässä tapahtui virhe" + err);
             console.log("Järjestelmässä tapahtui virhe" + err);
@@ -155,12 +146,12 @@ app.put("/api/update/:id", function (req, res) {
 
 // Poistetaan kiekko id:n perusteella
 // Finding a disc by ID and deleting it
-app.delete("/api/delete/:id", function (req, res) {
+app.delete("/api/delete/:id", (req, res) => {
     // Poimitaan id talteen ja välitetään se tietokannan poisto-operaatioon
     // Getting the id and sending information to the database
-    var id = req.params.id;
+    const id = req.params.id;
 
-    Disc.findByIdAndDelete(id, function (err, results) {
+    Disc.findByIdAndDelete(id, (err, results) => {
         // Handling errors
         if (err) {
             console.log("Something went wrong: " + err);

@@ -1,0 +1,31 @@
+.tablesubheader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 12px 0 0;
+  .searchbar {
+    margin-right: 24px;
+    flex: 1;
+    input {
+      width: 100%;
+      border-radius: 24px;
+      padding: 12px 24px;
+      font-size: 1.125rem;
+      border: 1px solid #333;
+      box-sizing: border-box;
+      &:focus {
+        outline-color: #333;
+      }
+    }
+    svg {
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      right: 104px;
+      top: calc(50% + 6px);
+      transform: translate(0%, -50%);
+      color: #333;
+    }
+  }
+}

@@ -1,0 +1,44 @@
+.button {
+  border: none;
+  color: #fff;
+  font-size: 1.125rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 40px;
+  min-width: 40px;
+  background-color: transparent;
+  border: 2px solid;
+  color: #444;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    color: #fff;
+    background-color: #444;
+  }
+  &:disabled {
+    background-color: black;
+  }
+}
+.delete {
+  color: #ff0000;
+  &:hover {
+    background-color: #ff0000;
+    border-color: #c00000;
+  }
+}
+.add {
+  color: #00ac00;
+  &:hover {
+    background-color: #00ac00;
+    border-color: #008000;
+  }
+}
+.edit {
+  color: #0000ff;
+  &:hover {
+    background-color: #0000ff;
+    border-color: #0000a0;
+  }
+}

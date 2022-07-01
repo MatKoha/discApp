@@ -1,0 +1,23 @@
+.buttongroup {
+  display: flex;
+  padding: 16px;
+  border-top: 1px solid #777;
+  margin: 16px 0 0;
+  button {
+    flex: 1;
+    height: 40px;
+    cursor: pointer;
+    background-color: transparent;
+    border: 2px solid;
+    border-radius: 4px;
+  }
+  .cancel {
+    color: #2575c8;
+    margin-right: 16px;
+  }
+  .confirm {
+    background-color: #2575c8;
+    color: #f2f2f2;
+    border-color: #2575c8;
+  }
+}

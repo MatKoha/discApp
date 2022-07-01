@@ -12,6 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "dayjs": "^1.11.2",
+    "dotenv": "^16.0.1",
     "express": "^4.17.1",
     "mongoose": "^5.9.11"
   }
