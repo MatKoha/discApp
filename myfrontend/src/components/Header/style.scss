@@ -6,8 +6,11 @@
   text-align: center;
   color: #444;
   .title {
-    font-size: 2rem;
+    font-size: 4em;
     font-weight: 600;
+    font-family: cursive;
+    color: darkgreen;
+    text-shadow: 2px 4px 3px rgb(0 0 0 / 30%);
   }
   .text {
     padding: 16px 0;
