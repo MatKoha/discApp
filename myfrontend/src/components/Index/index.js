@@ -60,7 +60,7 @@ const Index = () => {
 
 
   return (
-    <div className="app">
+    <div className="index">
       <Modal show={editing} onCancel={() => setEditing(false)} title="Edit disc">
         <EditForm
           data={selectedRows[0]}
