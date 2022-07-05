@@ -61,6 +61,11 @@ const Index = () => {
 
   return (
     <div className="index">
+      <div className="intro">
+        This is a frisbeegolf (also known as <a href="https://en.wikipedia.org/wiki/Disc_golf" target="_blank">disc golf</a>) related full stack app. <br />
+        The database has been implemented using MongoDB. Back-end with nodeJS + express. The front-end was built with React. <br />
+        Feel free to add, edit and remove items from "myBag".
+      </div>
       <Modal show={editing} onCancel={() => setEditing(false)} title="Edit disc">
         <EditForm
           data={selectedRows[0]}

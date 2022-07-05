@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import DataTable from 'react-data-table-component';
 import Button from '../Button';
 import TableSubHeader from '../TableSubHeader';
@@ -17,6 +18,7 @@ const Table = ({
   const [searchString, setSearchString] = useState('');
   const [filteredData, setFilteredData] = useState([]);
   const searchHandler = e => setSearchString(e.target.value.toLowerCase());
+  const isBigScreen = useMediaQuery({ query: '(min-width: 768px)' });
   const columns = [
     {
       name: 'Date added',
@@ -83,6 +85,7 @@ const Table = ({
       onSelectedRowsChange={handleRowSelected}
       contextActions={contextActions}
       subHeader
+      dense={!isBigScreen}
       subHeaderComponent={
         <TableSubHeader
           handleAddClick={handleAddClick}
