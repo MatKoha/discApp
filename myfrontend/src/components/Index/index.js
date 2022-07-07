@@ -62,10 +62,25 @@ const Index = () => {
   return (
     <div className="index">
       <div className="intro">
-        This is a frisbeegolf (also known as <a href="https://en.wikipedia.org/wiki/Disc_golf" target="_blank">disc golf</a>) related full stack app. <br />
-        The database has been implemented using MongoDB. Back-end with nodeJS + express. The front-end was built with React. <br />
-        Feel free to add, edit and remove items from "myBag". <br />
-        Git Repo: <a href="https://github.com/MatKoha/discApp" target="_blank">https://github.com/MatKoha/discApp</a>
+        This is a frisbeegolf (also known as <a href="https://en.wikipedia.org/wiki/Disc_golf" target="_blank">disc golf</a>) related full stack app.
+        The following tools were used:<br /><br />
+        <div className="row">
+          <div className="title">Database:</div>
+          <div className="text">MongoDB</div>
+        </div>
+        <div className="row">
+          <div className="title">Back-end:</div>
+          <div className="text">NodeJS + express</div>
+        </div>
+        <div className="row">
+          <div className="title">Front-end:</div>
+          <div className="text">React.js</div>
+        </div>
+        <div className="row">
+          <div className="title">Git Repo:</div>
+          <div className="text"><a href="https://github.com/MatKoha/discApp" target="_blank">https://github.com/MatKoha/discApp</a></div>
+        </div>
+        Feel free to add, edit and remove items from "myBag".
       </div>
       <Modal show={editing} onCancel={() => setEditing(false)} title="Edit disc">
         <EditForm

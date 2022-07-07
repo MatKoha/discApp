@@ -6,7 +6,17 @@
   .intro {
     background: #f2f2f2f2;
     color: #444;
-    text-align: center;
-    padding: 16px 0;
+    padding: 16px;
+    .row {
+      display: flex;
+      &:last-child {
+        padding: 0 0 16px;
+      }
+      .title {
+        font-weight: 600;
+        margin-right: 8px;
+        min-width: 80px;
+      }
+    }
   }
 }
